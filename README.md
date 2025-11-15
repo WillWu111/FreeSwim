@@ -34,14 +34,14 @@
 To install the required dependencies:
 
 
-1. Install **Diffusers v4.46.2**:
+1. Install **Diffusers v0.35.2**:
    ```bash
-   pip install diffusers==4.46.2
+   pip install diffusers==0.35.2
 
 ## **Usage** 📈
 
 To run inference with FreeSwim, you need to specify the following command-line arguments:
 
 ```bash
-python inference.py --mode cache --target_height 1080 --target_width 1920
+python inference.py --mode nocache --target_height 1080 --target_width 1920
 

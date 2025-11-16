@@ -52,8 +52,7 @@ We recommend the following core library versions (FlexAttention behavior is sens
 1. Install **Diffusers v0.35.2**:
    ```bash
    pip install diffusers==0.35.2
-
-
+   ```
 
 ## **Usage** 📈
 

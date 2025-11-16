@@ -61,9 +61,8 @@ To run inference with FreeSwim, you need to specify the following command-line a
 ```bash
 python inference.py --mode nocache --target_height 1080 --target_width 1920
 
-## **Hardware & Memory Tips 💾**
+## **Hardware & Memory Tips** 💾
 
 - A single 24 GB GPU (e.g., RTX 3090 / RTX 4090) is sufficient to generate 1080P, 81-frame videos with the default FreeSwim configuration.
 - For the cache-based variant, if GPU memory becomes a bottleneck, the cached cross-attention features can be offloaded to the CPU to further reduce VRAM usage, at the cost of a slight slowdown in inference.
-
 

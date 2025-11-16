@@ -39,10 +39,6 @@
 
 **FreeSwim** outperforms previous state-of-the-art methods in both **video quality** and **efficiency** on **VBench**, with significant improvements in aesthetic appeal, imaging quality, and overall consistency. It provides a **training-free solution** for generating **4K resolution videos**, achieving fine-grained details and semantic consistency. 🌈
 
-![Visual Comparison between models based on Wan](assets/case_study.jpg)
-
-<p align="center"><em>Figure: Visual Comparison at 1080P between models based on Wan. 🧩</em></p>
-
 ## **Installation** 🛠️
 
 We recommend the following core library versions (FlexAttention behavior is sensitive to the PyTorch version):

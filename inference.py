@@ -7,10 +7,12 @@ from diffusers import AutoencoderKLWan, WanPipeline
 from diffusers.utils import export_to_video, load_video
 
 parser = argparse.ArgumentParser(description='Choose between cache and nocache')
-parser.add_argument('--mode', type=str, choices=['cache', 'nocache'], required=True, help="Specify either 'cache' or 'nocache' mode")
-parser.add_argument('--target_height', type=int, required=True, help="Target height for resizing")
-parser.add_argument('--target_width', type=int, required=True, help="Target width for resizing")
+parser.add_argument('--mode', type=str, choices=['cache', 'nocache'], default='nocache', help="Specify either 'cache' or 'nocache' mode")
+parser.add_argument('--target_height', type=int, default=1088, help="Target height for Your Super Resolution Video")
+parser.add_argument('--target_width', type=int, default=1920, help="Target width for Your Super Resolution Video")
 args = parser.parse_args()
+
+
 
 if args.mode == 'cache':
     from cache.pipeline_wan import WanPipeline
@@ -53,8 +55,8 @@ pipe.vae.enable_tiling()
 
 init_mask_flex(
     num_frames=1 + (num_frames - 1) // 4, 
-    height=height // 16, 
-    width=width // 16,
+    height=args.target_height // 16, 
+    width=args.target_width // 16,
     d_h=base_height // 16 // 2, 
     d_w=base_width // 16 // 2, 
     device='cuda'

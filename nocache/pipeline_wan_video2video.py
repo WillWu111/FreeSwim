@@ -663,7 +663,7 @@ class WanVideoToVideoPipeline(DiffusionPipeline, WanLoraLoaderMixin):
 
                 self._current_timestep = t
                 if i < cover_step:
-                    # 现在是两份，分别处理
+                    # Duplicate the latents for dual-path processing
                     latents = torch.cat([latents, latents.clone()], dim=0)
                 latent_model_input = latents.to(transformer_dtype)
                 timestep = t.expand(latents.shape[0])
@@ -690,7 +690,8 @@ class WanVideoToVideoPipeline(DiffusionPipeline, WanLoraLoaderMixin):
 
                 # compute the previous noisy sample x_t -> x_t-1
                 latents = self.scheduler.step(noise_pred, t, latents, return_dict=False)[0]
-                # 那么这里如果不只取第一个local batch的话，下一步的的clone就会有问题
+
+                # Get the latents processed by window-attention
                 if i < cover_step:
                     latents = latents[0:1]
 

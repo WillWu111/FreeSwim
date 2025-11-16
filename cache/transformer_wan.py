@@ -62,57 +62,7 @@ def _get_added_kv_projections(attn: "WanAttention", encoder_hidden_states_img: t
         value_img = attn.add_v_proj(encoder_hidden_states_img)
     return key_img, value_img
 
-# def _build_spatial_attn_mask(F: int, H: int, W: int, h: int, w: int, device=None) -> torch.Tensor:
 
-#     device = device or "cpu"
-
-#     Ky, Kx = 2 * h + 1, 2 * w + 1
-#     print(Ky)
-#     print(Kx)
-#     # 窗口必须放得下
-#     assert Ky <= H, f"Ky={Ky} > H={H}"
-#     assert Kx <= W, f"Kx={Kx} > W={W}"
-
-#     HW = H * W
-#     L  = F * HW
-
-#     # 帧内网格坐标（长度 HW）
-#     yy, xx = torch.meshgrid(
-#         torch.arange(H, device=device),
-#         torch.arange(W, device=device),
-#         indexing="ij"
-#     )
-#     s_y = yy.reshape(-1)                      # [HW]
-#     s_x = xx.reshape(-1)                      # [HW]
-
-#     # 对每个 query 位置，计算窗口左上角（贴边平移，保证窗口恒定 Ky×Kx）
-#     y0 = (s_y - h).clamp(0, H - Ky)       # [HW]
-#     x0 = (s_x - w).clamp(0, W - Kx)       # [HW]
-#     y1 = y0 + Ky                              
-#     x1 = x0 + Kx                              
-
-#     # 变成 [HW, 1]，便于与 key 侧广播
-#     y0 = y0[:, None]                           # [HW,1]
-#     y1 = y1[:, None]
-#     x0 = x0[:, None]
-#     x1 = x1[:, None]
-
-#     # key 侧的坐标 [1,HW]
-#     yk = s_y[None, :]                          # [1,HW]
-#     xk = s_x[None, :]
-
-#     # 帧内可见矩阵（True=可见），大小 [HW, HW]
-#     spatial_allowed = (yk >= y0) & (yk < y1) & (xk >= x0) & (xk < x1)
-
-#     # 时间全放行：把帧内规则平铺到 F×F 个子块 → [L, L]
-#     allowed = spatial_allowed.repeat(F, F)     # True=可见
-
-#     print(allowed)  # => [L, L]
-#     return allowed
-
-        
-# mask1 = _build_spatial_attn_mask(4, 60, 104, 14, 25, device = "npu")
-# print("after initialize",mask1)
 class WanAttnProcessor:
     _attention_backend = None
 
@@ -550,9 +500,6 @@ class WanTransformerBlock(nn.Module):
         norm_hidden_states = self.norm2(hidden_states.float()).type_as(hidden_states)
         attn_output, cached_hidden_states = self.attn2(norm_hidden_states, encoder_hidden_states, None, None, 
         reuse_cross_output=reuse_cross_output, cache_cross_ouput=cache_cross_ouput, steps=steps, cond=cond)
-        # print("attn_output",attn_output.shape)
-        # print("hidden_states",hidden_states.shape)
-        # print("ref_hidden_states",ref_hidden_states.shape)
         hidden_states = hidden_states + attn_output
 
         # 3. Feed-forward
@@ -563,7 +510,6 @@ class WanTransformerBlock(nn.Module):
         hidden_states = (hidden_states.float() + ff_output.float() * c_gate_msa).type_as(hidden_states)
 
         if cond and cache_cross_ouput:
-            print(f"第{steps}步，返回需要被存储下来的cross output")
             return hidden_states, cached_hidden_states
         else:
             return hidden_states, None
@@ -665,7 +611,6 @@ class WanTransformer3DModel(
             ]
         )
 
-        print(num_layers)
 
         # 4. Output norm & projection
         self.norm_out = FP32LayerNorm(inner_dim, eps, elementwise_affine=False)
@@ -740,10 +685,8 @@ class WanTransformer3DModel(
 
         if cache_cross_ouput:
             effective_input_maps = [None] * len(self.blocks)
-            # print("effective_input_maps",effective_input_maps)
         else:
             effective_input_maps = reuse_cross_output
-            # print("effective_input_maps",effective_input_maps)
 
         if torch.is_grad_enabled() and self.gradient_checkpointing:
             for block_idx, block in enumerate(self.blocks):
@@ -764,11 +707,8 @@ class WanTransformer3DModel(
                 hidden_states, attn_output = block(
                     hidden_states, encoder_hidden_states, timestep_proj, rotary_emb, attn_for_block, cache_cross_ouput=cache_cross_ouput, steps=steps, cond=cond
                 )
-
-                # print("step",steps,"attn_output",attn_output)
                 
                 if attn_output is not None:
-                    # print("attn_output",attn_output.shape)
                     new_attn_outputs.append(attn_output.to("cuda"))
                     del attn_output
 
@@ -799,7 +739,6 @@ class WanTransformer3DModel(
         )
         hidden_states = hidden_states.permute(0, 7, 1, 4, 2, 5, 3, 6)
         output = hidden_states.flatten(6, 7).flatten(4, 5).flatten(2, 3)
-        # print("output",output.shape)
 
         if USE_PEFT_BACKEND:
             # remove `lora_scale` from each PEFT layer

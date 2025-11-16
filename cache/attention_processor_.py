@@ -14,6 +14,7 @@ BLOCK_MASK = None
 BLOCK_MASK_ = None
 
 
+# Inward sliding window mask
 @lru_cache
 def init_mask_flex(num_frames, height, width, d_h, d_w, device):
     
@@ -158,7 +159,7 @@ class WanFlexAttnProcessor_:
 
         attention_scale = math.sqrt(math.log(30 * 52 * 2, 30 * 52) / key.size(3))
 
-        # 这里先算一遍local的self
+        # Always comute the window attention
         hidden_states = self.flex_attn(
             query[0:1].transpose(1, 2),
             key[0:1].transpose(1, 2),
@@ -166,10 +167,10 @@ class WanFlexAttnProcessor_:
             scale=attention_scale
         ).transpose(1, 2)
 
-        # 然后再算一遍global的self
+        # cond compute the full-branch self attention every cached steps
         if cond:
             if cache_cross_ouput:
-                print("cond的需要计算global的self")
+                # recompute the full-branch self attention
                 hidden_states_ = dispatch_attention_fn(
                     query[1:2],
                     key[1:2],
@@ -181,10 +182,10 @@ class WanFlexAttnProcessor_:
                     scale=attention_scale
                 )
             else:
-                print("cond的不需要计算global的self")
+                # use the window attention output
                 hidden_states_ = hidden_states
         else:
-            print("uncond的self不需要global分支")
+            # uncond never compute the full-branch for acceleration
             hidden_states_ = hidden_states
 
         # (B, L, C) -> (B * 2, L, C)
@@ -279,10 +280,9 @@ class WanCrossAttnProcessor:
 
         if cond:
             if cache_cross_ouput:
-                print("step",steps,"cond的需要缓存计算global的cross attn")
+                # cond compute the full-branch cross attention and override window-branch cross attention output
                 key = torch.cat([key, key.clone()], dim=0)
                 value = torch.cat([value, value.clone()], dim=0)
-
                 hidden_states = dispatch_attention_fn(
                     query[1:2],
                     key[1:2],
@@ -294,13 +294,10 @@ class WanCrossAttnProcessor:
                 )
                 cached_cross_output = hidden_states # (1, L, C)
                 hidden_states = torch.cat([hidden_states, hidden_states.clone()], dim=0)
-                # print("hidden_states",hidden_states.shape)
-                
             else:
-                print("step",steps,"cond的不需要缓存计算global的cross attn")
                 hidden_states = torch.cat([reuse_cross_output, reuse_cross_output.clone()], dim=0)
         else:
-            print("uncond的cross不需要global分支")
+            # uncond only process the window-branch
             hidden_states = dispatch_attention_fn(
                 query[0:1],
                 key[0:1],
@@ -310,7 +307,6 @@ class WanCrossAttnProcessor:
                 is_causal=False,
                 backend=self._attention_backend,
             )
-            # print("hidden_states",hidden_states.shape) # (1, L, C)
             hidden_states = torch.cat([hidden_states, hidden_states.clone()], dim=0)
 
    

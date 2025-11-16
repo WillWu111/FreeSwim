@@ -28,10 +28,10 @@ elif args.mode == 'nocache':
 model_id = "Wan-AI/Wan2.1-T2V-1.3B-Diffusers"
 vae = AutoencoderKLWan.from_pretrained(model_id, subfolder="vae", torch_dtype=torch.float32)
 
-pipe = WanPipeline.from_pretrained(model_id, vae=vae, torch_dtype=torch.bfloat16)
-pipe.transformer = WanTransformer3DModel.from_pretrained(model_id, subfolder="transformer",torch_dtype=torch.bfloat16) 
-pipe.enable_model_cpu_offload()
-pipe.vae.enable_tiling()
+pipe_t2v = WanPipeline.from_pretrained(model_id, vae=vae, torch_dtype=torch.bfloat16)
+pipe_t2v.transformer = WanTransformer3DModel.from_pretrained(model_id, subfolder="transformer",torch_dtype=torch.bfloat16) 
+pipe_t2v.enable_sequential_cpu_offload()
+pipe_t2v.vae.enable_tiling()
 
 num_frames = 81
 base_height = 480
@@ -39,7 +39,7 @@ base_width = 832
 prompt = "A realistic close-up of an elderly man with gray hair and a thick gray beard, wearing a light-colored shirt. His head is slightly lowered. The camera zooms from full body to close-up, highlighting detailed facial wrinkles, skin texture, forehead lines, eye bags, and beard strands. High resolution, cinematic lighting, sharp details."
 negative_prompt = "repeating patterns, Blurry face, low detail, distorted features, extra limbs, cartoon style, smooth plastic skin, low resolution, flat colors, lack of texture"
 
-output = pipe(
+output = pipe_t2v(
     prompt=prompt,
     negative_prompt=negative_prompt,
     height=base_height,
@@ -48,10 +48,10 @@ output = pipe(
     guidance_scale=5.0
 ).frames[0]
 
-pipe = WanVideoToVideoPipeline.from_pretrained(model_id, vae=vae, torch_dtype=torch.bfloat16)
-pipe.transformer = WanTransformer3DModel.from_pretrained(model_id, subfolder="transformer", torch_dtype=torch.bfloat16) 
-pipe.enable_model_cpu_offload()
-pipe.vae.enable_tiling()
+pipe_v2v = WanVideoToVideoPipeline.from_pretrained(model_id, vae=vae, torch_dtype=torch.bfloat16)
+pipe_v2v.transformer = WanTransformer3DModel.from_pretrained(model_id, subfolder="transformer", torch_dtype=torch.bfloat16) 
+pipe_v2v.enable_sequential_cpu_offload()
+pipe_v2v.vae.enable_tiling()
 
 init_mask_flex(
     num_frames=1 + (num_frames - 1) // 4, 

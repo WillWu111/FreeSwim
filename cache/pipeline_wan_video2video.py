@@ -666,11 +666,12 @@ class WanVideoToVideoPipeline(DiffusionPipeline, WanLoraLoaderMixin):
 
                 self._current_timestep = t
                 if i < 40:
-                    # 现在是两份，分别处理
+                    # Duplicate the latents for dual-path processing
                     latents = torch.cat([latents, latents.clone()], dim=0)
                 latent_model_input = latents.to(transformer_dtype)
                 timestep = t.expand(latents.shape[0])
 
+                # delete the used feature to avoid oom
                 if i in guide_steps:
                     cache_cross_ouput = True
                     if cached_attn_outputs is not None:
@@ -691,14 +692,11 @@ class WanVideoToVideoPipeline(DiffusionPipeline, WanLoraLoaderMixin):
                     cond=True
                 )
 
-                # oom的原因是在第二步的时候
                 if new_attn_outputs and len(new_attn_outputs) > 0:
                     cached_attn_outputs = new_attn_outputs
                     del new_attn_outputs
-                    print("cached_attn_outputs",len(cached_attn_outputs))
 
                 if self.do_classifier_free_guidance:
-                    print("cache_cross_ouput is",cache_cross_ouput)
                     noise_uncond, new_uncond_attn_outputs = self.transformer(
                         hidden_states=latent_model_input,
                         timestep=timestep,
@@ -718,7 +716,7 @@ class WanVideoToVideoPipeline(DiffusionPipeline, WanLoraLoaderMixin):
                 # compute the previous noisy sample x_t -> x_t-1
                 latents = self.scheduler.step(noise_pred, t, latents, return_dict=False)[0]
                 
-                # 这里要取前一半是因为我们下一次只用local的结果，并且如果不取的话，下一个循环又会增加batch
+                # Get the latents processed by window-attention
                 if i < 40:
                     latents = latents[0:1]
 
@@ -752,14 +750,8 @@ class WanVideoToVideoPipeline(DiffusionPipeline, WanLoraLoaderMixin):
                 latents.device, latents.dtype
             )
             latents = latents / latents_std + latents_mean
-            # print("video", type(video))
-            # print("video", video)
             video = self.vae.decode(latents, return_dict=False)[0]
-            # print("video", type(video))
-            # print("video", video)
             video = self.video_processor.postprocess_video(video, output_type=output_type)
-            # print("video", type(video))
-            # print("video", video)
         else:
             video = latents
 

@@ -1,4 +1,4 @@
-# **FreeSwim: Revisiting Sliding-Window Attention Mechanisms for Training-Free Ultra-High-Resolution Video Generation** 🎥✨
+<img width="238" height="261" alt="image" src="https://github.com/user-attachments/assets/329c90c4-26d6-4df7-9162-930610737b1f" /># **FreeSwim: Revisiting Sliding-Window Attention Mechanisms for Training-Free Ultra-High-Resolution Video Generation** 🎥✨
 
 ![FreeSwim](https://img.shields.io/badge/FreeSwim-v1.0-blue) ![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)
 
@@ -54,12 +54,14 @@ We recommend the following core library versions (FlexAttention behavior is sens
    pip install diffusers==0.35.2
 
 
+
 ## **Usage** 📈
 
 To run inference with FreeSwim, you need to specify the following command-line arguments:
 
 ```bash
 python inference.py --mode nocache --target_height 1080 --target_width 1920
+```
 
 ## **Hardware & Memory Tips** 💾
 

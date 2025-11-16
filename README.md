@@ -3,7 +3,7 @@
 ![FreeSwim](https://img.shields.io/badge/FreeSwim-v1.0-blue) ![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)
 
 <!-- Teaser 放在比较靠前的位置 -->
-![Teaser – Ultra-High-Resolution Results](https://github.com/WillWu111/FreeSwim/blob/master/assets/teaser.pdf)
+![Teaser – Ultra-High-Resolution Results](assets/teaser.pdf)
 
 <p align="center"><em>Teaser: FreeSwim generates ultra-high-resolution videos with rich details and coherent global structure. ✨</em></p>
 
@@ -31,7 +31,7 @@
 - **Feature Reuse Strategy**: 🔁 Reduces computational costs by reusing cross-attention features from the full-attention branch during inference, enabling high-resolution generation with minimal performance loss.
 
 <!-- 方法架构图放在 Methodology 下面 -->
-![FreeSwim Framework with Cache](https://github.com/WillWu111/FreeSwim/blob/master/assets/method_with_cache.pdf)
+![FreeSwim Framework with Cache](assets/method_with_cache.pdf)
 
 <p align="center"><em>Figure: Overview of the FreeSwim framework with inward sliding-window attention, dual-path design, and cross-attention cache & reuse. 🧩</em></p>
 

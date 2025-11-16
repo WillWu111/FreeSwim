@@ -41,13 +41,18 @@
 
 ![Visual Comparison between models based on Wan](assets/case_study.jpg)
 
+<p align="center"><em>Figure: Visual Comparison at 1080P between models based on Wan. 🧩</em></p>
+
 ## **Installation** 🛠️
 
-To install the required dependencies:
+We recommend the following core library versions (FlexAttention behavior is sensitive to the PyTorch version):
+
+- **PyTorch**: `2.5.1+cu121`
 
 1. Install **Diffusers v0.35.2**:
    ```bash
    pip install diffusers==0.35.2
+
 
 ## **Usage** 📈
 

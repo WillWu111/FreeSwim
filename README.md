@@ -37,7 +37,7 @@
 
 ## **Results** 🏆
 
-**FreeSwim** outperforms previous state-of-the-art methods in both **video quality** and **efficiency** across multiple benchmarks, including **VBench**, with significant improvements in aesthetic appeal, imaging quality, and overall consistency. It provides a **training-free solution** for generating **4K resolution videos**, achieving fine-grained details and semantic consistency. 🌈
+**FreeSwim** outperforms previous state-of-the-art methods in both **video quality** and **efficiency** on **VBench**, with significant improvements in aesthetic appeal, imaging quality, and overall consistency. It provides a **training-free solution** for generating **4K resolution videos**, achieving fine-grained details and semantic consistency. 🌈
 
 ![Visual Comparison between models based on Wan](assets/case_study.jpg)
 
@@ -60,4 +60,9 @@ To run inference with FreeSwim, you need to specify the following command-line a
 
 ```bash
 python inference.py --mode nocache --target_height 1080 --target_width 1920
+
+### Hardware & Memory Tips 💾
+
+- A single 24 GB GPU (e.g., RTX 3090 / RTX 4090) is sufficient to generate 1080P, 81-frame videos with the default FreeSwim configuration.
+- For the cache-based variant, if GPU memory becomes a bottleneck, the cached cross-attention features can be offloaded to the CPU to further reduce VRAM usage, at the cost of a slight slowdown in inference.
 

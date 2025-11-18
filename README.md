@@ -1,6 +1,5 @@
 # **FreeSwim: Revisiting Sliding-Window Attention Mechanisms for Training-Free Ultra-High-Resolution Video Generation** 🎥✨
 
-![FreeSwim](https://img.shields.io/badge/FreeSwim-v1.0-blue) ![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)
 
 <!-- Teaser 放在比较靠前的位置 -->
 ![Teaser – Ultra-High-Resolution Results](assets/teaser.jpg)

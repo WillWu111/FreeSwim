@@ -43,12 +43,14 @@
 
 We recommend the following core library versions (FlexAttention behavior is sensitive to the PyTorch version):
 
-- **PyTorch**: `2.5.1+cu121`
-
-1. Install **Diffusers v0.35.2**:
-   ```bash
-   pip install diffusers==0.35.2
+### 1. Install **PyTorch**:
+```bash
+pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu118
    ```
+### 2. Install **Diffusers**:
+```bash
+pip install diffusers==0.35.2
+```
 
 ## **Usage** 📈
 

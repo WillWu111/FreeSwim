@@ -1,5 +1,6 @@
 # **FreeSwim: Revisiting Sliding-Window Attention Mechanisms for Training-Free Ultra-High-Resolution Video Generation** 🎥✨
 
+[![arXiv](https://img.shields.io/badge/arXiv-2511.14712-b31b1b.svg)](https://arxiv.org/abs/2511.14712)
 
 <!-- Teaser 放在比较靠前的位置 -->
 ![Teaser – Ultra-High-Resolution Results](assets/teaser.jpg)
@@ -24,7 +25,7 @@
 
 ## **Methodology** 🧠
 
-- **Coarse-to-Fine Generation**: 🖥️ The initial video is generated at the model’s native resolution and refined through a high-resolution upsampling process.
+- **Coarse-to-Fine Generation**: 🖥️ The initial video is generated at the model's native resolution and refined through a high-resolution upsampling process.
 - **Inward Sliding-Window Attention**: 🔄 Ensures that the receptive field during inference matches the training resolution, maintaining local coherence.
 - **Cross-Attention Override**: 🌐 A dual-path mechanism where the full-attention branch provides global semantic guidance to the window attention branch, ensuring high-quality output without repetitive patterns.
 - **Feature Reuse Strategy**: 🔁 Reduces computational costs by reusing cross-attention features from the full-attention branch during inference, enabling high-resolution generation with minimal performance loss.
@@ -62,3 +63,17 @@ python inference.py --mode nocache --target_height 1080 --target_width 1920
 - A single 24 GB GPU (e.g., RTX 3090 / RTX 4090) is sufficient to generate 1080P, 81-frame videos with the default FreeSwim configuration.
 - For the cache-based variant, if GPU memory becomes a bottleneck, the cached cross-attention features can be offloaded to the CPU to further reduce VRAM usage, at the cost of a slight slowdown in inference.
 
+## **Citation** 📚
+
+If you use FreeSwim in your research, please cite our paper:
+
+```bibtex
+@misc{wu2025freeswimrevisitingslidingwindowattention,
+      title={FreeSwim: Revisiting Sliding-Window Attention Mechanisms for Training-Free Ultra-High-Resolution Video Generation}, 
+      author={Yunfeng Wu and Jiayi Song and Zhenxiong Tan and Zihao He and Songhua Liu},
+      year={2025},
+      eprint={2511.14712},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2511.14712}, 
+}

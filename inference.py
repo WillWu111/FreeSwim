@@ -15,12 +15,10 @@ args = parser.parse_args()
 
 
 if args.mode == 'cache':
-    from cache.pipeline_wan import WanPipeline
     from cache.transformer_wan import WanTransformer3DModel
     from cache.pipeline_wan_video2video import WanVideoToVideoPipeline
     from cache.attention_processor_ import init_mask_flex, WanFlexAttnProcessor_, WanCrossAttnProcessor
 elif args.mode == 'nocache':
-    from nocache.pipeline_wan import WanPipeline
     from nocache.transformer_wan import WanTransformer3DModel
     from nocache.pipeline_wan_video2video import WanVideoToVideoPipeline
     from nocache.attention_processor_ import init_mask_flex, WanFlexAttnProcessor_, WanCrossAttnProcessor
@@ -48,6 +46,8 @@ output = pipe_t2v(
     guidance_scale=5.0
 ).frames[0]
 
+del pipe_t2v
+
 pipe_v2v = WanVideoToVideoPipeline.from_pretrained(model_id, vae=vae, torch_dtype=torch.bfloat16)
 pipe_v2v.transformer = WanTransformer3DModel.from_pretrained(model_id, subfolder="transformer", torch_dtype=torch.bfloat16) 
 pipe_v2v.enable_sequential_cpu_offload()
@@ -63,18 +63,18 @@ init_mask_flex(
 )
 
 attn_processors = {}
-for k in pipe.transformer.attn_processors.keys():
+for k in pipe_v2v.transformer.attn_processors.keys():
     if 'attn2' in k:
         attn_processors[k] = WanCrossAttnProcessor()
     else:
         attn_processors[k] = WanFlexAttnProcessor_()
-pipe.transformer.set_attn_processor(attn_processors)
+pipe_v2v.transformer.set_attn_processor(attn_processors)
 
-pipe.scheduler.config.flow_shift = 9.0
+pipe_v2v.scheduler.config.flow_shift = 9.0
 
 output = [cv2.resize(item, (args.target_width, args.target_height), interpolation=cv2.INTER_LINEAR) for item in output]
 
-output = pipe(
+output = pipe_v2v(
     prompt=prompt,
     negative_prompt=negative_prompt,
     height=args.target_height,

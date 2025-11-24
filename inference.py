@@ -27,7 +27,6 @@ model_id = "Wan-AI/Wan2.1-T2V-1.3B-Diffusers"
 vae = AutoencoderKLWan.from_pretrained(model_id, subfolder="vae", torch_dtype=torch.float32)
 
 pipe_t2v = WanPipeline.from_pretrained(model_id, vae=vae, torch_dtype=torch.bfloat16)
-pipe_t2v.transformer = WanTransformer3DModel.from_pretrained(model_id, subfolder="transformer",torch_dtype=torch.bfloat16) 
 pipe_t2v.enable_sequential_cpu_offload()
 pipe_t2v.vae.enable_tiling()
 

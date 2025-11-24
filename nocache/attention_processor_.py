@@ -13,7 +13,7 @@ create_block_mask = torch.compile(create_block_mask)
 BLOCK_MASK = None
 BLOCK_MASK_ = None
 
-
+# Inward sliding window mask
 @lru_cache
 def init_mask_flex(num_frames, height, width, d_h, d_w, device):
     

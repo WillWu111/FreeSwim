@@ -31,9 +31,6 @@ from diffusers.video_processor import VideoProcessor
 from diffusers.pipelines.pipeline_utils import DiffusionPipeline
 from diffusers.pipelines.wan.pipeline_output import WanPipelineOutput
 
-# from attention_processor_ import WanFlexAttnProcessor
-from transformer_wan import WanAttnProcessor
-
 
 if is_torch_xla_available():
     import torch_xla.core.xla_model as xm

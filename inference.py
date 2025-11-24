@@ -89,6 +89,6 @@ output = pipe_v2v(
     strength=0.7,
     # You can specify the cached_steps if you choose the cache mode
     # cache_steps=5,
-)
+).frames[0]
 
 export_to_video(output, "Old_man.mp4", fps=15)

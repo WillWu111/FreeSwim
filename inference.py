@@ -34,6 +34,8 @@ pipe_t2v.vae.enable_tiling()
 num_frames = 81
 base_height = 480
 base_width = 832
+# If you want to use the 14B models, please remember to change the base_width to 1280, and base_height to 720.
+
 prompt = "A realistic close-up of an elderly man with gray hair and a thick gray beard, wearing a light-colored shirt. His head is slightly lowered. The camera zooms from full body to close-up, highlighting detailed facial wrinkles, skin texture, forehead lines, eye bags, and beard strands. High resolution, cinematic lighting, sharp details."
 negative_prompt = "repeating patterns, Blurry face, low detail, distorted features, extra limbs, cartoon style, smooth plastic skin, low resolution, flat colors, lack of texture"
 

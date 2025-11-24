@@ -652,7 +652,7 @@ class WanVideoToVideoPipeline(DiffusionPipeline, WanLoraLoaderMixin):
         num_warmup_steps = len(timesteps) - num_inference_steps * self.scheduler.order
         self._num_timesteps = len(timesteps)
 
-        guide_steps = range(0,35,cache_steps)
+        guide_steps = range(0, timesteps, cache_steps)
 
         cached_attn_outputs = None  # Initialize attn_outputs here
 

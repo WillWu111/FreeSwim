@@ -21,7 +21,7 @@ elif args.mode == 'nocache':
     from nocache.pipeline_wan_video2video import WanVideoToVideoPipeline
     from nocache.attention_processor_ import init_mask_flex, WanFlexAttnProcessor_, WanCrossAttnProcessor
 
-assert args.target_height <= 1920 and args.target_width <= 1088, \
+assert args.target_width <= 1920 and args.target_height <= 1088, \
     "Please use 14B model at higher resolutions for better results"
 
 model_id = "Wan-AI/Wan2.1-T2V-1.3B-Diffusers"

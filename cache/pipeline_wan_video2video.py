@@ -31,9 +31,6 @@ from diffusers.video_processor import VideoProcessor
 from diffusers.pipelines.pipeline_utils import DiffusionPipeline
 from diffusers.pipelines.wan.pipeline_output import WanPipelineOutput
 
-# from attention_processor_ import WanFlexAttnProcessor
-from transformer_wan import WanAttnProcessor
-
 
 if is_torch_xla_available():
     import torch_xla.core.xla_model as xm
@@ -505,7 +502,7 @@ class WanVideoToVideoPipeline(DiffusionPipeline, WanLoraLoaderMixin):
         ] = None,
         callback_on_step_end_tensor_inputs: List[str] = ["latents"],
         max_sequence_length: int = 512,
-        cache_steps: int = 0,
+        cache_steps: int = 2,
     ):
         r"""
         The call function to the pipeline for generation.

@@ -551,8 +551,6 @@ class WanTransformerBlock(nn.Module):
                 self.scale_shift_table + temb.float()
             ).chunk(6, dim=1)
 
-        # print("block",cond)
-
         # 1. Self-attention
         norm_hidden_states = (self.norm1(hidden_states.float()) * (1 + scale_msa) + shift_msa).type_as(hidden_states)
         attn_output = self.attn1(norm_hidden_states, None, None, rotary_emb, cond=cond)
@@ -716,9 +714,9 @@ class WanTransformer3DModel(
             rotary_emb = (rotary_emb[0], rotary_emb[1], rotary_emb_holistic[0], rotary_emb_holistic[1])
 
 
-        print("hidden_states.shape", hidden_states.shape)
+        # print("hidden_states.shape", hidden_states.shape)
         hidden_states = self.patch_embedding(hidden_states)
-        print("hidden_states.shape", hidden_states.shape)
+        # print("hidden_states.shape", hidden_states.shape)
         hidden_states = hidden_states.flatten(2).transpose(1, 2)
 
         # timestep shape: batch_size, or batch_size, seq_len (wan 2.2 ti2v)

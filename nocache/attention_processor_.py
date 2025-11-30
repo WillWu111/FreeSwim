@@ -24,6 +24,7 @@ def init_mask_flex(num_frames, height, width, d_h, d_w, device):
         q_w = q_hw % width
 
         # compute the distance that need to inward
+        # Note: If you want to try the no-inward version, just set these following terms to 0
         d_b = (d_h - q_h).clamp_min(0)
         d_u = (d_h + q_h - height + 1).clamp_min(0)
         d_r = (d_w - q_w).clamp_min(0)

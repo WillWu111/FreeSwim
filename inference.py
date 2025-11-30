@@ -1,7 +1,6 @@
 import cv2
 import torch
 import argparse
-import cv2 
 import torch 
 from diffusers import AutoencoderKLWan, WanPipeline 
 from diffusers.utils import export_to_video, load_video

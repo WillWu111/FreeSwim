@@ -66,7 +66,9 @@ init_mask_flex(
     width=args.target_width // 16,
     d_h=base_height // 16 // 2, 
     d_w=base_width // 16 // 2, 
-    device='cuda'
+    device='cuda',
+    # if you use other torch version, the memory usage would make a big difference, 
+    # but you can specify the device to cpu to avoid this problem
 )
 
 attn_processors = {}

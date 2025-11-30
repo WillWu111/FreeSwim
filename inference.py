@@ -5,6 +5,7 @@ import cv2
 import torch 
 from diffusers import AutoencoderKLWan, WanPipeline 
 from diffusers.utils import export_to_video, load_video
+import gc
 
 parser = argparse.ArgumentParser(description='Choose between cache and nocache')
 parser.add_argument('--mode', type=str, choices=['cache', 'nocache'], default='nocache', help="Specify either 'cache' or 'nocache' mode")
@@ -28,6 +29,7 @@ model_id = "Wan-AI/Wan2.1-T2V-1.3B-Diffusers"
 vae = AutoencoderKLWan.from_pretrained(model_id, subfolder="vae", torch_dtype=torch.float32)
 
 pipe_t2v = WanPipeline.from_pretrained(model_id, vae=vae, torch_dtype=torch.bfloat16)
+# You can accelerate by change the following line with pipe_t2v.enable_model_cpu_offload(), but require more memory
 pipe_t2v.enable_sequential_cpu_offload()
 pipe_t2v.vae.enable_tiling()
 
@@ -54,9 +56,12 @@ output = pipe_t2v(
 output = [cv2.resize(item, (args.target_width, args.target_height), interpolation=cv2.INTER_LINEAR) for item in output]
 
 del pipe_t2v
+gc.collect()
+torch.cuda.empty_cache()
 
 pipe_v2v = WanVideoToVideoPipeline.from_pretrained(model_id, vae=vae, torch_dtype=torch.bfloat16)
 pipe_v2v.transformer = WanTransformer3DModel.from_pretrained(model_id, subfolder="transformer", torch_dtype=torch.bfloat16) 
+# You can accelerate by change the following line with pipe_v2v.enable_model_cpu_offload(), but require more memory
 pipe_v2v.enable_sequential_cpu_offload()
 pipe_v2v.vae.enable_tiling()
 
@@ -80,6 +85,8 @@ for k in pipe_v2v.transformer.attn_processors.keys():
 pipe_v2v.transformer.set_attn_processor(attn_processors)
 
 pipe_v2v.scheduler.config.flow_shift = 9.0
+
+del init_mask_flex
 
 output = pipe_v2v(
     video=output,

@@ -23,10 +23,12 @@ def init_mask_flex(num_frames, height, width, d_h, d_w, device):
         q_hw = q_idx % (height * width)
         q_h = q_hw // width
         q_w = q_hw % width
-        d_b = max(d_h - q_h, 0)
-        d_u = max(d_h + q_h - height + 1, 0)
-        d_r = max(d_w - q_w, 0)
-        d_l = max(d_w + q_w - width + 1, 0)
+
+        # compute the distance that need to inward
+        d_b = (d_h - q_h).clamp_min(0)
+        d_u = (d_h + q_h - height + 1).clamp_min(0)
+        d_r = (d_w - q_w).clamp_min(0)
+        d_l = (d_w + q_w - width + 1).clamp_min(0)
 
         kv_t = kv_idx // (height * width)
         kv_hw = kv_idx % (height * width)
@@ -48,7 +50,7 @@ def init_mask_flex(num_frames, height, width, d_h, d_w, device):
     BLOCK_MASK = create_block_mask(get_mask, B=None, H=None, Q_LEN=num_frames * height * width, 
                                    KV_LEN=num_frames * height * width, device=device, _compile=True)
 
-                     
+                 
 def _get_qkv_projections(attn, hidden_states: torch.Tensor, encoder_hidden_states: torch.Tensor):
     # encoder_hidden_states is only passed for cross-attention
     if encoder_hidden_states is None:

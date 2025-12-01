@@ -706,8 +706,7 @@ class WanVideoToVideoPipeline(DiffusionPipeline, WanLoraLoaderMixin):
                         reuse_cross_output=None,
                         cond=False
                     )
-                    
-
+                    del new_uncond_attn_outputs
                         
                     noise_pred = noise_uncond + guidance_scale * (noise_pred - noise_uncond)
 

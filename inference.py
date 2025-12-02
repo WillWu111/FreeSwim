@@ -72,7 +72,8 @@ init_mask_flex(
     d_w=base_width // 16 // 2, 
     device='cuda',
     # if you use other torch version, the memory usage would make a big difference, 
-    # but you can specify the device to cpu to avoid this problem
+    # but you can specify the device to cpu to avoid this problem,
+    # which would make the speed slower for around 5s
 )
 
 attn_processors = {}

@@ -335,6 +335,10 @@ a:hover { color: var(--aqua); }
 .abstract-copy p:last-child { margin-bottom: 0; }
 .method-container { max-width: 1320px !important; }
 
+.paper-section--motivation {
+  border-bottom: 1px solid var(--line);
+}
+
 .section-heading-row {
   display: flex;
   align-items: end;
@@ -351,6 +355,31 @@ a:hover { color: var(--aqua); }
   margin: 0 0 2px;
   color: var(--ink-soft);
   line-height: 1.65;
+}
+
+.motivation-figure {
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 14px 45px rgba(8, 47, 58, 0.08);
+}
+
+.figure-scroll { overflow-x: auto; }
+
+.motivation-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 13px;
+}
+
+.motivation-figure figcaption {
+  padding: 12px 8px 1px;
+  color: var(--ink-soft);
+  text-align: center;
+  font-size: 13px;
 }
 
 .method-figure {
@@ -526,6 +555,9 @@ a:focus-visible, button:focus-visible, video:focus-visible {
   .method-figure { padding: 6px; border-radius: 14px; overflow-x: auto; }
   .method-figure img { min-width: 920px; }
   .method-figure figcaption { text-align: left; }
+  .motivation-figure { padding: 6px; border-radius: 14px; }
+  .motivation-figure img { min-width: 920px; }
+  .motivation-figure figcaption { text-align: left; }
   .results-grid strong { font-size: 42px; }
   .bibtex-card pre { padding: 58px 20px 22px; font-size: 11px; }
   .footer-inner { display: block; text-align: center; }

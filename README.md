@@ -11,6 +11,7 @@ Project page for:
 ## Included assets
 
 - `static/videos/freeswim_showcase_1080p.mp4` — six generated examples combined into one 1080P web video
+- `static/images/freeswim_motivation.svg` — motivation comparison figure
 - `static/images/freeswim_method.webp` — optimized web version of the method figure
 
 ## Local preview

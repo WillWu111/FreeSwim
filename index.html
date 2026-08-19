@@ -4,21 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FreeSwim | Training-Free Ultra-High-Resolution Video Generation</title>
-  <meta name="description" content="FreeSwim is a training-free method for generating coherent, detailed ultra-high-resolution videos with inward sliding-window attention and cached global guidance.">
+  <meta name="description" content="FreeSwim is a training-free method for coherent, detailed ultra-high-resolution video generation with inward sliding-window attention and cached global guidance.">
   <meta name="keywords" content="FreeSwim, video generation, ultra-high resolution, 4K video, diffusion transformer, sliding-window attention, training-free, ECCV 2026">
   <meta name="author" content="Yunfeng Wu, Jiayi Song, Zhenxiong Tan, Zihao He, Songhua Liu">
   <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#087f8c">
+  <meta name="theme-color" content="#061c24">
+
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://willwu111.github.io/FreeSwim/">
   <meta property="og:title" content="FreeSwim: Training-Free Ultra-High-Resolution Video Generation">
-  <meta property="og:description" content="Fine-grained 4K video generation through inward sliding-window attention, dual-path global guidance, and feature reuse.">
+  <meta property="og:description" content="Fine-grained 4K video generation through inward sliding-window attention, global guidance, and feature reuse.">
+  <meta property="og:image" content="https://willwu111.github.io/FreeSwim/static/images/freeswim_teaser.jpg">
   <meta property="article:section" content="Computer Vision">
   <meta property="article:tag" content="Video Generation">
   <meta property="article:tag" content="Diffusion Transformers">
+
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="FreeSwim: Training-Free Ultra-High-Resolution Video Generation">
   <meta name="twitter:description" content="Fine-grained 4K video generation without additional training or adaptation.">
+  <meta name="twitter:image" content="https://willwu111.github.io/FreeSwim/static/images/freeswim_teaser.jpg">
+
   <meta name="citation_title" content="FreeSwim: Revisiting Sliding-Window Attention Mechanisms for Training-Free Ultra-High-Resolution Video Generation">
   <meta name="citation_author" content="Wu, Yunfeng">
   <meta name="citation_author" content="Song, Jiayi">
@@ -28,146 +33,205 @@
   <meta name="citation_publication_date" content="2025">
   <meta name="citation_conference_title" content="European Conference on Computer Vision 2026">
   <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2511.14712">
+
   <link rel="canonical" href="https://willwu111.github.io/FreeSwim/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Newsreader:opsz,wght@6..72,500;600&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/css/index.css">
+  <script defer src="static/js/index.js"></script>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
     "headline": "FreeSwim: Revisiting Sliding-Window Attention Mechanisms for Training-Free Ultra-High-Resolution Video Generation",
-    "description": "A training-free method for generating coherent, detailed ultra-high-resolution videos with inward sliding-window attention and cached global guidance.",
+    "description": "A training-free method for coherent, detailed ultra-high-resolution video generation with inward sliding-window attention and cached global guidance.",
     "author": [
-      {"@type": "Person", "name": "Yunfeng Wu", "url": "https://willwu111.github.io", "affiliation": [{"@type": "Organization", "name": "Shanghai Jiao Tong University"}, {"@type": "Organization", "name": "Xi'an Jiaotong-Liverpool University"}]},
-      {"@type": "Person", "name": "Jiayi Song", "affiliation": [{"@type": "Organization", "name": "Shanghai Jiao Tong University"}, {"@type": "Organization", "name": "Xi'an Jiaotong University"}]},
-      {"@type": "Person", "name": "Zhenxiong Tan", "affiliation": {"@type": "Organization", "name": "National University of Singapore"}},
-      {"@type": "Person", "name": "Zihao He", "affiliation": {"@type": "Organization", "name": "Shanghai Jiao Tong University"}},
-      {"@type": "Person", "name": "Songhua Liu", "url": "https://huage001.github.io/", "affiliation": {"@type": "Organization", "name": "Shanghai Jiao Tong University"}}
+      {"@type": "Person", "name": "Yunfeng Wu", "url": "https://willwu111.github.io"},
+      {"@type": "Person", "name": "Jiayi Song"},
+      {"@type": "Person", "name": "Zhenxiong Tan"},
+      {"@type": "Person", "name": "Zihao He"},
+      {"@type": "Person", "name": "Songhua Liu", "url": "https://huage001.github.io/"}
     ],
     "datePublished": "2025-11-18",
     "publisher": {"@type": "Organization", "name": "European Conference on Computer Vision"},
-    "sameAs": ["https://arxiv.org/abs/2511.14712", "https://github.com/WillWu111/FreeSwim"],
-    "keywords": ["video generation", "ultra-high resolution", "diffusion transformer", "sliding-window attention", "training-free"],
-    "isAccessibleForFree": true
+    "url": "https://arxiv.org/abs/2511.14712",
+    "codeRepository": "https://github.com/WillWu111/FreeSwim",
+    "keywords": ["video generation", "ultra-high resolution", "diffusion transformer", "sliding-window attention", "training-free"]
   }
   </script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
-  <header class="paper-header">
-    <div class="paper-header__glow paper-header__glow--one" aria-hidden="true"></div>
-    <div class="paper-header__glow paper-header__glow--two" aria-hidden="true"></div>
-    <div class="container is-max-desktop paper-header__content">
-      <div class="venue-pill"><span></span> ECCV 2026</div>
-      <h1 class="publication-title">
-        <span class="title-mark">FreeSwim</span>
-        <span class="title-rest">Revisiting Sliding-Window Attention Mechanisms for<br class="desktop-break"> Training-Free Ultra-High-Resolution Video Generation</span>
-      </h1>
-      <div class="publication-authors" aria-label="Paper authors">
-        <span class="author-block"><a href="https://willwu111.github.io" target="_blank" rel="noopener">Yunfeng Wu</a><sup>1,2,*</sup></span>
-        <span class="author-block">Jiayi Song<sup>1,3,*</sup></span>
-        <span class="author-block">Zhenxiong Tan<sup>4</sup></span>
-        <span class="author-block">Zihao He<sup>1</sup></span>
-        <span class="author-block"><a href="https://huage001.github.io/" target="_blank" rel="noopener">Songhua Liu</a><sup>1,†</sup></span>
-      </div>
-      <div class="affiliations">
-        <span><sup>1</sup> School of Artificial Intelligence, Shanghai Jiao Tong University</span>
-        <span><sup>2</sup> Xi'an Jiaotong-Liverpool University</span>
-        <span><sup>3</sup> Xi'an Jiaotong University</span>
-        <span><sup>4</sup> National University of Singapore</span>
-        <small><sup>*</sup> Equal contribution&nbsp;&nbsp;&nbsp;&nbsp;<sup>†</sup> Corresponding author</small>
-      </div>
-      <nav class="publication-links" aria-label="Paper resources">
-        <a href="https://arxiv.org/pdf/2511.14712" target="_blank" rel="noopener" class="paper-button paper-button--primary"><i class="fas fa-file-pdf" aria-hidden="true"></i><span>Paper</span></a>
-        <a href="https://arxiv.org/abs/2511.14712" target="_blank" rel="noopener" class="paper-button"><i class="ai ai-arxiv" aria-hidden="true"></i><span>arXiv</span></a>
-        <a href="https://github.com/WillWu111/FreeSwim" target="_blank" rel="noopener" class="paper-button"><i class="fab fa-github" aria-hidden="true"></i><span>Code</span></a>
+
+  <header class="site-header" aria-label="Primary navigation">
+    <div class="nav-shell">
+      <a class="brand" href="#top" aria-label="FreeSwim home"><span class="wave-mark" aria-hidden="true"></span><span>FreeSwim</span></a>
+      <nav class="nav-links" aria-label="Page sections">
+        <a href="#showcase">Showcase</a>
+        <a href="#motivation">Motivation</a>
+        <a href="#method">Method</a>
+        <a href="#citation">Citation</a>
       </nav>
+      <a class="nav-paper" href="https://arxiv.org/abs/2511.14712" target="_blank" rel="noopener">Read paper <span aria-hidden="true">↗</span></a>
     </div>
   </header>
+
   <main id="main-content">
-    <section class="showcase section-shell" aria-labelledby="showcase-title">
-      <div class="container is-max-desktop">
+    <section class="hero" id="top">
+      <div class="hero-image" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="ripple ripple-one" aria-hidden="true"></div>
+      <div class="ripple ripple-two" aria-hidden="true"></div>
+
+      <div class="hero-content page-shell">
+        <div class="venue-pill"><span></span> ECCV 2026</div>
+        <h1><span>FreeSwim</span>Revisiting Sliding-Window Attention Mechanisms for Training-Free Ultra-High-Resolution Video Generation</h1>
+        <p class="hero-lede">Let pretrained video Diffusion Transformers swim beyond their native resolution—preserving local detail, global structure, and motion without additional training.</p>
+
+        <div class="authors" aria-label="Paper authors">
+          <a href="https://willwu111.github.io" target="_blank" rel="noopener">Yunfeng Wu<sup>1,2,*</sup></a>
+          <span>Jiayi Song<sup>1,3,*</sup></span>
+          <span>Zhenxiong Tan<sup>4</sup></span>
+          <span>Zihao He<sup>1</sup></span>
+          <a href="https://huage001.github.io/" target="_blank" rel="noopener">Songhua Liu<sup>1,†</sup></a>
+        </div>
+
+        <div class="affiliations">
+          <p><sup>1</sup> School of Artificial Intelligence, Shanghai Jiao Tong University</p>
+          <p><sup>2</sup> Xi’an Jiaotong-Liverpool University &nbsp; <sup>3</sup> Xi’an Jiaotong University &nbsp; <sup>4</sup> National University of Singapore</p>
+          <p class="author-notes"><span>* Equal contribution</span><span>† Corresponding author</span></p>
+        </div>
+
+        <div class="hero-actions">
+          <a class="action action-primary" href="https://arxiv.org/pdf/2511.14712" target="_blank" rel="noopener"><span class="action-icon">PDF</span> Paper</a>
+          <a class="action action-secondary" href="https://arxiv.org/abs/2511.14712" target="_blank" rel="noopener"><span class="action-icon">A</span> arXiv</a>
+          <a class="action action-secondary" href="https://github.com/WillWu111/FreeSwim" target="_blank" rel="noopener"><span class="action-icon">⌘</span> Code</a>
+        </div>
+      </div>
+
+      <div class="hero-stats page-shell" aria-label="Research highlights">
+        <article><strong>4K</strong><span>Ultra-high resolution</span></article>
+        <article><strong>0</strong><span>Additional training</span></article>
+        <article><strong>&gt;2×</strong><span>Faster with cache</span></article>
+      </div>
+    </section>
+
+    <section class="showcase-section" id="showcase" aria-labelledby="showcase-title">
+      <div class="wide-shell">
+        <div class="showcase-heading">
+          <div><div class="section-kicker light-kicker"><span>01</span> Generated in motion</div><h2 id="showcase-title">Beyond the <em>native window.</em></h2></div>
+          <p>One continuous reel of high-resolution generations, from fine natural textures to globally coherent cinematic scenes.</p>
+        </div>
         <div class="video-frame">
-          <video id="showcase-video" autoplay muted loop controls playsinline preload="metadata" aria-describedby="showcase-caption">
+          <video id="showcase-video" autoplay muted loop controls playsinline preload="metadata" poster="static/images/freeswim_teaser.jpg" aria-describedby="showcase-caption">
             <source src="static/videos/freeswim_showcase_1080p.mp4" type="video/mp4">
             Your browser does not support HTML5 video.
           </video>
-          <div class="video-badge" aria-hidden="true"><span>Generated with FreeSwim</span><strong>1080P · 2K · 4K</strong></div>
+          <div class="video-badge"><span class="live-dot"></span> FreeSwim · 1080P / 2K / 4K</div>
         </div>
-        <h2 id="showcase-title" class="visually-hidden">Generated video showcase</h2>
-        <p id="showcase-caption" class="lead-caption">FreeSwim scales pretrained video Diffusion Transformers beyond their native resolution—without additional training—while preserving detailed appearance and coherent global structure.</p>
-        <div class="highlights" aria-label="Key highlights">
-          <article class="highlight-card"><span class="highlight-index">01</span><strong>Training-Free</strong><p>No high-resolution fine-tuning or model adaptation.</p></article>
-          <article class="highlight-card"><span class="highlight-index">02</span><strong>Up to 4K</strong><p>Fine-grained synthesis far beyond the native training scale.</p></article>
-          <article class="highlight-card"><span class="highlight-index">03</span><strong>&gt;2× Faster</strong><p>Cached global guidance reduces repeated full-attention computation.</p></article>
-        </div>
+        <p id="showcase-caption" class="showcase-caption">Generated with pretrained video DiTs—without high-resolution fine-tuning.</p>
       </div>
     </section>
-    <section class="paper-section paper-section--tinted" aria-labelledby="abstract-title">
-      <div class="container is-max-desktop narrow-copy">
-        <p class="section-eyebrow">Overview</p>
-        <h2 id="abstract-title" class="section-title">Abstract</h2>
+
+    <section class="paper-section abstract-section" aria-labelledby="abstract-title">
+      <div class="page-shell abstract-grid">
+        <div>
+          <div class="section-kicker"><span>02</span> Overview</div>
+          <h2 id="abstract-title">Training-free,<br><em>detail-rich.</em></h2>
+        </div>
         <div class="abstract-copy">
-          <p>The quadratic cost of attention makes end-to-end training for ultra-high-resolution video generation prohibitively expensive. FreeSwim instead reuses video Diffusion Transformers at their native training scale and extends them to much higher resolutions without any additional training or adaptation.</p>
-          <p>Our inward sliding-window attention keeps each query token's receptive field aligned with the scale seen during training, improving local fidelity and detail. To prevent the repetition and semantic drift caused by purely local attention, a parallel full-attention branch supplies global semantic guidance through cross-attention override.</p>
-          <p>A feature cache reuses that global guidance across denoising steps, substantially reducing full 3D attention computation. Across modern video DiTs, FreeSwim produces coherent ultra-high-resolution videos with strong fine detail and competitive efficiency, reaching state-of-the-art VBench performance in a fully training-free setting.</p>
+          <p>The quadratic cost of attention makes end-to-end training for ultra-high-resolution video generation prohibitively expensive. FreeSwim instead reuses video Diffusion Transformers at their native scale and extends them to much higher resolutions without additional training or adaptation.</p>
+          <p>Inward sliding-window attention keeps each token’s receptive field aligned with the scale seen during training. A parallel full-attention branch restores global semantic guidance through cross-attention override, while a feature cache reuses that guidance across denoising steps for efficient generation.</p>
+          <p>Across modern video DiTs, FreeSwim produces coherent ultra-high-resolution videos with strong fine detail and state-of-the-art VBench performance in a fully training-free setting.</p>
         </div>
       </div>
     </section>
-    <section class="paper-section paper-section--motivation" aria-labelledby="motivation-title">
-      <div class="container method-container">
-        <div class="section-heading-row">
-          <div><p class="section-eyebrow">Why FreeSwim</p><h2 id="motivation-title" class="section-title">Motivation</h2></div>
-          <p class="section-intro">Scaling video DiTs beyond their native resolution exposes a fundamental trade-off: global attention preserves structure but misses fine detail, while local windows improve detail at the cost of repetition and semantic inconsistency.</p>
+
+    <section class="paper-section ideas-section" aria-labelledby="ideas-title">
+      <div class="page-shell">
+        <div class="section-heading">
+          <div><div class="section-kicker"><span>03</span> Core ideas</div><h2 id="ideas-title">Local fidelity.<br>Global awareness.</h2></div>
+          <p>FreeSwim coordinates two complementary attention paths, then removes redundant work through feature reuse.</p>
         </div>
-        <figure class="motivation-figure">
-          <div class="figure-scroll">
-            <img src="static/images/freeswim_motivation.svg" alt="Visual comparison motivating FreeSwim, showing differences in fine detail and structural consistency across high-resolution video generation strategies" loading="lazy" width="5093" height="2431">
-          </div>
-          <figcaption>FreeSwim is motivated by the need to preserve both fine-grained local detail and coherent global semantics when extrapolating video generators to ultra-high resolutions.</figcaption>
+        <div class="idea-grid">
+          <article class="idea-card idea-window">
+            <div class="idea-visual visual-window" aria-hidden="true"><i></i><i></i><i></i></div>
+            <span class="idea-number">01</span>
+            <h3>Inward windows</h3>
+            <p>Boundary-aware sliding windows keep every query token’s receptive field consistent with the native training scale.</p>
+            <small>Preserve local detail</small>
+          </article>
+          <article class="idea-card idea-global">
+            <div class="idea-visual visual-global" aria-hidden="true"><i></i><i></i></div>
+            <span class="idea-number">02</span>
+            <h3>Global override</h3>
+            <p>A full-attention branch supplies global semantics to the local path, reducing repetition and structural drift.</p>
+            <small>Restore coherence</small>
+          </article>
+          <article class="idea-card idea-cache">
+            <div class="idea-visual visual-cache" aria-hidden="true"><i></i><i></i><i></i></div>
+            <span class="idea-number">03</span>
+            <h3>Feature cache</h3>
+            <p>Global cross-attention features are refreshed periodically and reused between denoising steps.</p>
+            <small>Accelerate inference</small>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="paper-section figure-section motivation-section" id="motivation" aria-labelledby="motivation-title">
+      <div class="wide-shell">
+        <div class="section-heading figure-heading">
+          <div><div class="section-kicker"><span>04</span> Why FreeSwim</div><h2 id="motivation-title">Escaping the resolution trade-off.</h2></div>
+          <p>Global attention preserves structure but misses fine detail. Local windows sharpen details yet risk repetition and semantic inconsistency.</p>
+        </div>
+        <figure class="paper-figure motivation-figure">
+          <div class="figure-scroll"><img src="static/images/freeswim_motivation.svg" alt="Visual comparison motivating FreeSwim, showing differences in fine detail and structural consistency across high-resolution video generation strategies" loading="lazy" width="5093" height="2431"></div>
+          <figcaption>FreeSwim is designed to retain both fine-grained local detail and coherent global semantics at ultra-high resolutions.</figcaption>
         </figure>
       </div>
     </section>
-    <section class="paper-section" aria-labelledby="method-title">
-      <div class="container method-container">
-        <div class="section-heading-row">
-          <div><p class="section-eyebrow">How it works</p><h2 id="method-title" class="section-title">FreeSwim Framework</h2></div>
-          <p class="section-intro">Local detail and global structure travel through two coordinated paths, with global features cached and reused for efficient denoising.</p>
+
+    <section class="paper-section figure-section method-section" id="method" aria-labelledby="method-title">
+      <div class="wide-shell">
+        <div class="section-heading figure-heading">
+          <div><div class="section-kicker"><span>05</span> Method</div><h2 id="method-title">Two paths, flowing together.</h2></div>
+          <p>Local detail and global structure travel through coordinated branches, with cached global features reused for efficient denoising.</p>
         </div>
-        <figure class="method-figure">
-          <img src="static/images/freeswim_method.webp" alt="FreeSwim framework with inward sliding-window attention, a full-attention branch, cross-attention override, and cached feature reuse" loading="lazy" width="2795" height="1040">
+        <figure class="paper-figure method-figure">
+          <div class="figure-scroll"><img src="static/images/freeswim_method.webp" alt="FreeSwim framework with inward sliding-window attention, a full-attention branch, cross-attention override, and cached feature reuse" loading="lazy" width="2795" height="1040"></div>
           <figcaption>Overview of the dual-path FreeSwim pipeline and inward sliding-window attention.</figcaption>
         </figure>
-        <div class="method-steps">
-          <article><span>1</span><h3>Preserve native context</h3><p>Inward windows keep every token's spatial receptive field consistent with the resolution used during training, including boundary tokens.</p></article>
-          <article><span>2</span><h3>Restore global semantics</h3><p>A full-attention branch guides the local branch through cross-attention override, reducing repetition and structural inconsistency.</p></article>
-          <article><span>3</span><h3>Cache and reuse</h3><p>Global cross-attention features are updated periodically and reused between steps, cutting redundant full 3D attention computation.</p></article>
+        <div class="method-flow" aria-label="FreeSwim method stages">
+          <article><span>1</span><div><h3>Preserve native context</h3><p>Inward windows align local receptive fields with the model’s training resolution, including at frame boundaries.</p></div></article>
+          <article><span>2</span><div><h3>Restore global semantics</h3><p>Full attention guides the local branch through cross-attention override.</p></div></article>
+          <article><span>3</span><div><h3>Cache and reuse</h3><p>Global features are reused across steps to avoid redundant 3D attention.</p></div></article>
         </div>
       </div>
     </section>
-    <section class="paper-section paper-section--deep" aria-labelledby="results-title">
-      <div class="container is-max-desktop">
-        <p class="section-eyebrow section-eyebrow--light">Results</p>
-        <h2 id="results-title" class="section-title section-title--light">High resolution, without high-resolution training.</h2>
-        <p class="results-lead">FreeSwim improves fine-grained quality while retaining global semantic coherence, and scales across Wan2.1 and LTX-Video backbones.</p>
-        <div class="results-grid">
-          <article><strong>4K</strong><span>ultra-high-resolution generation</span></article>
-          <article><strong>73.7</strong><span>overall VBench score on Wan2.1-1.3B with cache</span></article>
-          <article><strong>&gt;2×</strong><span>inference speedup from cached feature reuse</span></article>
+
+    <section class="paper-section results-section" aria-labelledby="results-title">
+      <div class="page-shell results-grid">
+        <div>
+          <div class="section-kicker light-kicker"><span>06</span> Results</div>
+          <h2 id="results-title">High resolution,<br><em>no retraining.</em></h2>
+          <p class="results-lede">FreeSwim scales across Wan2.1 and LTX-Video backbones, improving fine-grained quality while retaining global semantic coherence.</p>
         </div>
-        <p class="results-note">See the paper for full quantitative comparisons, user studies, ablations, prompts, and additional videos.</p>
+        <div class="result-list">
+          <article><strong>4K</strong><div><h3>Generation</h3><p>Ultra-high-resolution synthesis far beyond the native training scale.</p></div></article>
+          <article><strong>73.7</strong><div><h3>VBench</h3><p>Overall score on Wan2.1-1.3B with cached guidance.</p></div></article>
+          <article><strong>&gt;2×</strong><div><h3>Speedup</h3><p>Efficient inference through cached global feature reuse.</p></div></article>
+        </div>
       </div>
     </section>
-    <section class="paper-section" aria-labelledby="citation-title">
-      <div class="container is-max-desktop citation-wrap">
-        <div><p class="section-eyebrow">Reference</p><h2 id="citation-title" class="section-title">BibTeX</h2><p class="citation-help">If FreeSwim helps your research, please cite our paper.</p></div>
+
+    <section class="paper-section citation-section" id="citation" aria-labelledby="citation-title">
+      <div class="page-shell citation-wrap">
+        <div><div class="section-kicker"><span>07</span> Reference</div><h2 id="citation-title">Swim with us.</h2><p>If FreeSwim helps your research, please cite the paper.</p></div>
         <div class="bibtex-card">
-          <button class="copy-bibtex-btn" type="button" aria-label="Copy BibTeX citation"><i class="far fa-copy" aria-hidden="true"></i><span class="copy-text">Copy</span></button>
+          <button class="copy-bibtex-btn" type="button" aria-label="Copy BibTeX citation"><span class="copy-text">Copy BibTeX</span></button>
           <pre><code id="bibtex-code">@misc{wu2025freeswim,
   title         = {FreeSwim: Revisiting Sliding-Window Attention Mechanisms for Training-Free Ultra-High-Resolution Video Generation},
   author        = {Yunfeng Wu and Jiayi Song and Zhenxiong Tan and Zihao He and Songhua Liu},
@@ -181,8 +245,13 @@
       </div>
     </section>
   </main>
-  <footer class="footer"><div class="container is-max-desktop footer-inner"><p><strong>FreeSwim</strong> · ECCV 2026</p><p>Page adapted from the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a>, inspired by Nerfies.</p></div></footer>
-  <script src="static/js/fontawesome.all.min.js"></script>
-  <script src="static/js/index.js"></script>
+
+  <footer class="site-footer">
+    <div class="page-shell footer-inner">
+      <div><span class="footer-brand">FreeSwim</span><p>Training-Free Ultra-High-Resolution Video Generation</p></div>
+      <div class="footer-links"><a href="https://arxiv.org/abs/2511.14712" target="_blank" rel="noopener">Paper ↗</a><a href="https://github.com/WillWu111/FreeSwim" target="_blank" rel="noopener">Code ↗</a></div>
+      <p class="template-note">Built with the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a>.</p>
+    </div>
+  </footer>
 </body>
 </html>
